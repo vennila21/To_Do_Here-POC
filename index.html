@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en" ng-app="todo">
+<head>
+	<title>ToDo-Here</title>
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
+	<link rel="stylesheet" href="css/common.css">
+    <link rel="stylesheet" href="css/menu.css"/>
+	<script src="js/libs/angular.min.js"></script>
+	<script src="js/libs/angular-local-storage.min.js"></script>
+	<script src="js/libs/sortable.js"></script>
+	<script src="js/app.js"></script>
+	<script src="js/directives/angular.editInPlace.js"></script>
+</head>
+<body ng-controller="TodoCtrl" ng-init="init()">
+    <div id="wrapper" ng-controller="menuBar" ng-class="menuOpen">
+        <!-- Sidebar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+            <ul class="nav sidebar-nav">
+                <li class="sidebar-brand"><a href="#">Menu</a></li>
+                <li><a href="#">New List</a></li>
+                <li><a href="#">Existing List</a></li>
+                <li><a href="#">Log Out</a></li>
+            </ul>
+        </nav>
+        <!-- /#sidebar-wrapper -->
+        <!-- Page Content -->
+        <div id="page-content-wrapper">
+            <button type="button" class="hamburger" ng-class="menuState" data-toggle="offcanvas" ng-click="toggle()">
+                <span class="hamb-top"></span>
+                <span class="hamb-middle"></span>
+                <span class="hamb-bottom"></span>
+            </button>
+        </div>
+        <!-- /#page-content-wrapper -->
+    </div>
+	<div class="container" ng-controller="TodoCtrl" id="playground">
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="row">
+					<div class="col-xs-12">
+						<ul class="nav nav-pills todo-filter">
+						  <li ng-class="{'active' : show == 'All' }" ng-click="show='All'"><a href="#">All</a></li>
+						  <li ng-class="{'active' : show == 'Incomplete' }" ng-click="show='Incomplete'"><a href="#">Incomplete</a></li>
+						  <li ng-class="{'active' : show == 'Complete' }" ng-click="show='Complete'"><a href="#">Complete</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="row" id="todoAdd">
+					<div class="form-group">
+						<input class="todoField" id="newTodoField" type="text" ng-model="newTodo" placeholder="Add New Todo List" ng-enter/>
+					</div>
+				</div>
+                <button id="todoSubmit" class="btn btn-default" ng-click="addTodo()">Add List</button>
+				<div class="row todoContainer">
+					<ul class="list-unstyled" ng-repeat="todos in model track by $index" ui-sortable="todoSortable" ng-model="todos.list" ng-show="$index === currentShow">
+						<li class="todoTask" ng-repeat="todo in todos.list | filter:showFn | filter :todoSearch ">
+							<input class="todoCheckbox" ng-model="todo.isDone" type="checkbox">
+							<label class="todoCheckboxlabel" ></label>
+							<edit-in-place value="todo.taskName"></edit-in-place>
+							<button type="button" class="close pull-right customeClose" aria-hidden="true" ng-click="deleteTodo($index)"></button>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
