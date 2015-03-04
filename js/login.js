@@ -8,21 +8,4 @@ $(document).mousemove(function(e){
             }
         });
   });
- if((localStorage.chkbx) && (localStorage.chkbx !=' ')) {
-$("#rememberMe").attr('checked', 'checked');
-$("#uname").val(localStorage.usrname);
-$("#password").val(localStorage.pass);
-}
-else{
-$("#rememberMe").removeAttr("checked");
-$("#uname").val("");
-$("#password").val("");
-}
-var userRecord= JSON.parse(localStorage.userData || "null") || [];
-
-
-$("#newUserButton").click(function(){
-window.location="Register.html";
-});
-
 });
