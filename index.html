@@ -9,33 +9,63 @@
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
 	<link rel="stylesheet" href="css/common.css">
     <link rel="stylesheet" href="css/menu.css"/>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 	<script src="js/libs/angular.min.js"></script>
 	<script src="js/libs/angular-local-storage.min.js"></script>
-	<script src="js/libs/sortable.js"></script>
 	<script src="js/app.js"></script>
 	<script src="js/directives/angular.editInPlace.js"></script>
+	<script src="js/directives/googleDir.js"></script>
 </head>
-<body ng-controller="TodoCtrl" ng-init="init()">
-    <div id="wrapper" ng-controller="menuBar" ng-class="menuOpen">
-        <!-- Sidebar -->
-        <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
-            <ul class="nav sidebar-nav">
+<body ng-controller="TodoCtrl" ng-init="init()">   
+ <div id="wrapper" ng-controller="menuBar" ng-class="menuOpen">
+   
+     <!-- Sidebar -->
+       
+ <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
+  
+          <ul class="nav sidebar-nav">
                 <li class="sidebar-brand"><a href="#">Menu</a></li>
-                <li><a href="#">New List</a></li>
-                <li><a href="#">Existing List</a></li>
-                <li><a href="#">Log Out</a></li>
+          
+      <li><a href="#">New List</a></li>
+                
+<li><a href="#">Existing List</a></li>
+ 
+               <li><a href="#">Log Out</a></li>
             </ul>
         </nav>
         <!-- /#sidebar-wrapper -->
-        <!-- Page Content -->
-        <div id="page-content-wrapper">
-            <button type="button" class="hamburger" ng-class="menuState" data-toggle="offcanvas" ng-click="toggle()">
-                <span class="hamb-top"></span>
-                <span class="hamb-middle"></span>
-                <span class="hamb-bottom"></span>
-            </button>
+    
+    <!-- Page Content -->
+      
+  <div id="page-content-wrapper">
+    
+        <button type="button" class="hamburger" ng-class="menuState" data-toggle="offcanvas" ng-click="toggle()">
+          
+      <span class="hamb-top"></span>
+   
+             <span class="hamb-middle"></span>
+    
+            <span class="hamb-bottom"></span>
+           
+ </button>
+       
+ </div>
+      
+  <!-- /#page-content-wrapper -->
+    
+</div>
+  
+  <div class="container">
+    
+  <div class="row">
+        <div class="col-md-12">
+         
+ <google-places location="location"></google-places>
+      
+    <div class="container" id="map" ></div>
         </div>
-        <!-- /#page-content-wrapper -->
+      </div>
+      
     </div>
 	<div class="container" ng-controller="TodoCtrl" id="playground">
 		<div class="row">
@@ -50,9 +80,12 @@
 					</div>
 				</div>
 				<div class="row" id="todoAdd">
+				  <div class="col-md-6">
 					<div class="form-group">
 						<input class="todoField" id="newTodoField" type="text" ng-model="newTodo" placeholder="Add New Todo List" ng-enter/>
 					</div>
+        </div>
+        
 				</div>
                 <button id="todoSubmit" class="btn btn-default" ng-click="addTodo()">Add List</button>
 				<div class="row todoContainer">
@@ -68,5 +101,6 @@
 			</div>
 		</div>
 	</div>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&libraries=places&language=en-US"></script>
 </body>
 </html>
