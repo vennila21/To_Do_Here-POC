@@ -161,17 +161,11 @@ var userRecord= JSON.parse(localStorage.userData || "null") ||
 
 $scope.loginClick=function(){
 var flag=0;
-var userName=document.getElementById
-
-("uname").value;
-var 
-
-password=document.getElementById("password").value;
+var userName=document.getElementById("uname").value;
+var password=document.getElementById("password").value;
 localStorage.usrname=userName;
 
-if (angular.element
-
-("#rememberMe").is(' :checked' )){
+if (angular.element("#rememberMe").is(' :checked' )){
 //save username and password
 localStorage.usrname=userName;
 localStorage.pass=password;
@@ -182,20 +176,14 @@ localStorage.usrname="";
 localStorage.pass="";
 localStorage.chkbx="";
 }
-for (var j = 0; j < 
-
-userRecord.length; j++){
-  if
-
-((userRecord[j].userName==userName)&&(userRecord[j].password==password))
+for (var j = 0; j < userRecord.length; j++){
+  if((userRecord[j].userName==userName)&&(userRecord[j].password==password))
 {
 flag=1;
 break;
 }
 }
-if
-
-(flag==1)
+if(flag==1)
 {
 
 window.location="index.html";
