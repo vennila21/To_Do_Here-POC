@@ -1,252 +1,88 @@
-"use strict";
+'use strict';  
 
-var App = angular.module("todo", ["LocalStorageModule"]);
-App.controller("TodoCtrl", function ($scope, localStorageService) {
-	$scope.init = function () {
-		if (!localStorageService.get("todoList")) {
-			$scope.model = [
-				{
-					name: "Primary", list: [{ taskName: "Create an Angular-js TodoList", isDone: false },
-					{ taskName: "Understanding Angular-js Directives", isDone: true }
-				]
-				},
-				{
+		App.directive('googlePlaces', function(){
+                return {
+                    restrict:'E',
+                    replace:true,
+                    // transclude:true,
+                    scope: {location:'='},
+		    
+		    
+                    template: '<input class="form-control" id="google_places_ac" name="google_places_ac" type="text" class="input-block-level"/>',
+		    
+                    link: function($scope, elm, attrs){
+                        var autocomplete = new google.maps.places.Autocomplete($("#google_places_ac")[0], {});
+                        google.maps.event.addListener(autocomplete, 'place_changed', function() {
+                            var place = autocomplete.getPlace();
+                            $scope.location = place.geometry.location.lat() + ',' + place.geometry.location.lng();
 			
-			name: "Secondary", list: [
-						{ taskName: "Build an open-source website builder", isDone: false },
-				
-
-		{ taskName: "BUild an Email Builder", isDone: false }
-				
-
-	]
+                            $scope.$apply();
 			
 
-	}
-			];
-		}
 
-else{
-			$scope.model = localStorageService.get("todoList");
-		}
-	
+			var mapOptions = {
+        zoom: 8,
+        center: new google.maps.LatLng(place.geometry.location.lat(), place.geometry.location.lng()),
+        mapTypeId: google.maps.MapTypeId.TERRAIN
+    }
+var dummy="Tambaram, Chennai, Tamil Nadu, India";
 
-	$scope.show = "All";
-		
-
-$scope.currentShow = 0;
-	};
-
-	
-
-$scope.addTodo = function  () {
-		/*Should prepend to array*/
-alert("todo");
-		
-
-$scope.model[$scope.currentShow].list.splice(0, 0, {taskName: $scope.newTodo, isDone: false });
-	
-
-	/*Reset the Field*/
-		$scope.newTodo = "";
-	};
-
-	
-
-$scope.deleteTodo = 
-
-function  (index) {
-		$scope.model[$scope.currentShow].list.splice(index, 1);
-	
-
+var location =loadPlace();
+var latlon =
+{
+lat:place.geometry.location.lat(),
+lon:place.geometry.location.lng(),
+place:document.getElementById("google_places_ac").value,
+id: +new Date()
 };
 
-	
-
-$scope.todoSortable = {
-		containment: "parent",
-		cursor: "move",
-		
-
-tolerance: "pointer"
-	};
-
-	
-
-	/* Filter Function for All | Incomplete | Complete */
-	
-
-$scope.showFn = function  (todo) {
-		if ($scope.show === "All") {
-			
-
-return 
-
-true;
-		}else if(todo.isDone && $scope.show === "Complete"){
-			
-
-return true;
-	
-
-	}else if(!todo.isDone && $scope.show === "Incomplete"){
-		
-
-	return true;
-		
-
-}else{
-			return false;
-		}
-	
-
-};
-
-	$scope.$watch("model",function  
-
-(newVal,oldVal) {
-		if (newVal !== null && 
-
-angular.isDefined(newVal) && newVal!==oldVal) {
-	
-
-		
-
-localStorageService.add("todoList",angular.toJson(newVal));
-		}
-	
-
-},true);
-
-});
-/* 
-
------- Menu Controllers  -------- */
-App.controller('menuBar', function($scope) {
-    
-
-$scope.myVar = 
-
-false;
-    $scope.menuOpen = '';
-    $scope.menuState = "is-closed";
-    $scope.toggle = 
-
-function() {
-        
-
-if ($scope.myVar == true) {
-            $scope.menuState = "is-closed";
-            
-
-$scope.menuOpen = '';
-      } 
-
-else {
-          $scope.menuOpen = 'toggled';
-          $scope.menuState = "is-open";
-      }
-    $scope.myVar = !$scope.myVar;
-    };
-});
-
-App.controller("loginCtrl",function($scope)
-
+location.push(latlon);
+savePlace();
+var locationRecord= JSON.parse(localStorage.location|| "null") || [];
+for (var j = 0; j < locationRecord.length; j++){
+  if(locationRecord[j].place==dummy)
 {
-$scope.login=true;
-$scope.register=false;
-var userRecord= JSON.parse(localStorage.userData || "null") || 
-
-[];
-
-$scope.loginClick=function(){
-var flag=0;
-var userName=document.getElementById("uname").value;
-var password=document.getElementById("password").value;
-localStorage.usrname=userName;
-
-if (angular.element("#rememberMe").is(' :checked' )){
-//save username and password
-localStorage.usrname=userName;
-localStorage.pass=password;
-localStorage.chkbx=angular.element("#rememberMe").val();
-}
-else{
-localStorage.usrname="";
-localStorage.pass="";
-localStorage.chkbx="";
-}
-for (var j = 0; j < userRecord.length; j++){
-  if((userRecord[j].userName==userName)&&(userRecord[j].password==password))
-{
-flag=1;
+abc=1;
 break;
 }
 }
-if(flag==1)
-{
 
-window.location="index.html";
-return true;
-}
-else{
-alert("You are not a registered user.\n Please get registered by clicking on New user Button !");
-return false;
-}
-};
 
-$scope.registerClick=function(){
-$scope.login=false;
-$scope.register=true;
 
-};
 
-        // Get the responses if any or an empty array
-      var userData = loadData();
-      
-      
 
-$scope.registerMe=function(element, attrs) {
-        $scope.login=true;
-          $scope.register=false;
-       
-
- // Wait for user to add new ones
- var emailAddress = document.getElementById("email").value,
-  
-
-userId = document.getElementById("userName").value,
- pass = document.getElementById("pwd").value,
-  data = {
-             email: emailAddress,
-             userName: userId,
-             password: pass,		
-			id:   +new Date()
-            };
-        if (data.userName) {
-          
-
-userData.push(data);
-          saveData();
-          
-        }
-         
-};
-// Get the responses (if any) or an empty array
-      function loadData() {
-        return JSON.parse(localStorage.userData || "null") || 
+ function loadPlace() {
+        return JSON.parse(localStorage.location || "null") || 
 
 [];
 
       }
 //Save the new data in local storage
-      function saveData() {
-        localStorage.userData= JSON.stringify(userData);
+      function savePlace() {
+        localStorage.location= JSON.stringify(location);
       }
-});
 
+    $scope.map = new google.maps.Map(document.getElementById('map'), mapOptions);
 
+    $scope.markers = [];
+  var createMarker = function (info){
+        
+        var marker = new google.maps.Marker({
+            map: $scope.map,
+            position: new google.maps.LatLng(place.geometry.location.lat(), place.geometry.location.lng())
+           
+        });
+      
+        
+       
+        
 
+        
+    }  
+    
+    createMarker(latlon[0]);
 
-
-
+                        });
+                    }
+                }
+            });
