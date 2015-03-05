@@ -6,20 +6,14 @@ App.controller("TodoCtrl", function ($scope, localStorageService) {
 		if (!localStorageService.get("todoList")) {
 			$scope.model = [
 				{
-					name: "Primary", list: [{ taskName: "Create an 
-
-Angular-js TodoList", isDone: false },
-					{ taskName: "Understanding Angular-js 
-
-Directives", isDone: true }
+					name: "Primary", list: [{ taskName: "Create an Angular-js TodoList", isDone: false },
+					{ taskName: "Understanding Angular-js Directives", isDone: true }
 				]
 				},
 				{
 			
 			name: "Secondary", list: [
-						{ taskName: "Build an open-source 
-
-website builder", isDone: false },
+						{ taskName: "Build an open-source website builder", isDone: false },
 				
 
 		{ taskName: "BUild an Email Builder", isDone: false }
@@ -50,9 +44,7 @@ $scope.addTodo = function  () {
 alert("todo");
 		
 
-$scope.model[$scope.currentShow].list.splice(0, 0, {taskName: $scope.newTodo, 
-
-isDone: false });
+$scope.model[$scope.currentShow].list.splice(0, 0, {taskName: $scope.newTodo, isDone: false });
 	
 
 	/*Reset the Field*/
@@ -81,9 +73,7 @@ tolerance: "pointer"
 
 	
 
-	/* Filter Function for All | Incomplete | Complete 
-
-*/
+	/* Filter Function for All | Incomplete | Complete */
 	
 
 $scope.showFn = function  (todo) {
@@ -154,13 +144,9 @@ $scope.menuOpen = '';
 
 else {
           $scope.menuOpen = 'toggled';
-          $scope.menuState = 
-
-"is-open";
+          $scope.menuState = "is-open";
       }
-    $scope.myVar 
-
-= !$scope.myVar;
+    $scope.myVar = !$scope.myVar;
     };
 });
 
@@ -270,7 +256,6 @@ userData.push(data);
         localStorage.userData= JSON.stringify(userData);
       }
 });
-
 
 
 
