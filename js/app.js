@@ -1,3 +1,5 @@
+// Code goes here
+
 "use strict";
 
 var App = angular.module("todo", ["LocalStorageModule"]);
@@ -6,143 +8,75 @@ App.controller("TodoCtrl", function ($scope, localStorageService) {
 		if (!localStorageService.get("todoList")) {
 			$scope.model = [
 				{
-					name: "Primary", list: [{ taskName: "Create an Angular-js TodoList", isDone: false },
-					{ taskName: "Understanding Angular-js Directives", isDone: true }
-				]
+					name: "Primary", list: [
+						{ taskName: "Create an Angular-js TodoList", isDone: false },
+						{ taskName: "Understanding Angular-js Directives", isDone: true }
+					]
 				},
 				{
-			
-			name: "Secondary", list: [
+					name: "Secondary", list: [
 						{ taskName: "Build an open-source website builder", isDone: false },
-				
-
-		{ taskName: "BUild an Email Builder", isDone: false }
-				
-
-	]
-			
-
-	}
+						{ taskName: "BUild an Email Builder", isDone: false }
+					]
+				}
 			];
-		}
-
-else{
+		}else{
 			$scope.model = localStorageService.get("todoList");
 		}
-	
-
-	$scope.show = "All";
-		
-
-$scope.currentShow = 0;
+		$scope.show = "All";
+		$scope.currentShow = 0;
 	};
 
-	
-
-$scope.addTodo = function  () {
+	$scope.addTodo = function  () {
 		/*Should prepend to array*/
 alert("todo");
-		
-
-$scope.model[$scope.currentShow].list.splice(0, 0, {taskName: $scope.newTodo, isDone: false });
-	
-
-	/*Reset the Field*/
+		$scope.model[$scope.currentShow].list.splice(0, 0, {taskName: $scope.newTodo, isDone: false });
+		/*Reset the Field*/
 		$scope.newTodo = "";
 	};
 
-	
-
-$scope.deleteTodo = 
-
-function  (index) {
+	$scope.deleteTodo = function  (index) {
 		$scope.model[$scope.currentShow].list.splice(index, 1);
-	
+	};
 
-};
-
-	
-
-$scope.todoSortable = {
+	$scope.todoSortable = {
 		containment: "parent",
 		cursor: "move",
-		
-
-tolerance: "pointer"
+		tolerance: "pointer"
 	};
 
 	
 
 	/* Filter Function for All | Incomplete | Complete */
-	
-
-$scope.showFn = function  (todo) {
+	$scope.showFn = function  (todo) {
 		if ($scope.show === "All") {
-			
-
-return 
-
-true;
+			return true;
 		}else if(todo.isDone && $scope.show === "Complete"){
-			
-
-return true;
-	
-
-	}else if(!todo.isDone && $scope.show === "Incomplete"){
-		
-
-	return true;
-		
-
-}else{
+			return true;
+		}else if(!todo.isDone && $scope.show === "Incomplete"){
+			return true;
+		}else{
 			return false;
 		}
-	
+	};
 
-};
-
-	$scope.$watch("model",function  
-
-(newVal,oldVal) {
-		if (newVal !== null && 
-
-angular.isDefined(newVal) && newVal!==oldVal) {
-	
-
-		
-
-localStorageService.add("todoList",angular.toJson(newVal));
+	$scope.$watch("model",function  (newVal,oldVal) {
+		if (newVal !== null && angular.isDefined(newVal) && newVal!==oldVal) {
+			localStorageService.add("todoList",angular.toJson(newVal));
 		}
-	
-
-},true);
+	},true);
 
 });
-/* 
-
------- Menu Controllers  -------- */
+/* ------ Menu Controllers  -------- */
 App.controller('menuBar', function($scope) {
-    
-
-$scope.myVar = 
-
-false;
+    $scope.myVar = false;
     $scope.menuOpen = '';
     $scope.menuState = "is-closed";
-    $scope.toggle = 
-
-function() {
-        
-
-if ($scope.myVar == true) {
+    $scope.toggle = function() {
+        if ($scope.myVar == true) {
             $scope.menuState = "is-closed";
-            
-
-$scope.menuOpen = '';
-      } 
-
-else {
+            $scope.menuOpen = '';
+      } else {
           $scope.menuOpen = 'toggled';
           $scope.menuState = "is-open";
       }
@@ -150,26 +84,27 @@ else {
     };
 });
 
-App.controller("loginCtrl",function($scope)
-
-{
+App.controller("loginCtrl",function($scope){
 $scope.login=true;
 $scope.register=false;
-var userRecord= JSON.parse(localStorage.userData || "null") || 
-
-[];
-
+var userRecord= JSON.parse(localStorage.userData || "null") || [];
+if((localStorage.chkbx) && (localStorage.chkbx!==' '))
+{
+  $scope.userName=localStorage.usrname;
+  $scope.password=localStorage.pass;
+  $scope.checkFlag=true;
+}
 $scope.loginClick=function(){
 var flag=0;
 var userName=document.getElementById("uname").value;
 var password=document.getElementById("password").value;
 localStorage.usrname=userName;
 
-if (angular.element("#rememberMe").is(' :checked' )){
+if ($scope.checkFlag){
 //save username and password
 localStorage.usrname=userName;
 localStorage.pass=password;
-localStorage.chkbx=angular.element("#rememberMe").val();
+localStorage.chkbx=$scope.checkFlag;
 }
 else{
 localStorage.usrname="";
@@ -201,42 +136,32 @@ $scope.register=true;
 
 };
 
-        // Get the responses if any or an empty array
+        // Get the responses (if any) or an empty array
       var userData = loadData();
       
-      
-
-$scope.registerMe=function(element, attrs) {
-        $scope.login=true;
-          $scope.register=false;
-       
-
- // Wait for user to add new ones
+      $scope.registerMe=function() {
+        //$scope.login=true;
+         // $scope.register=false;
+        // Wait for user to add new ones
  var emailAddress = document.getElementById("email").value,
-  
-
-userId = document.getElementById("userName").value,
+  userId = document.getElementById("userName").value,
  pass = document.getElementById("pwd").value,
-  data = {
+            data = {
              email: emailAddress,
              userName: userId,
-             password: pass,		
-			id:   +new Date()
+             password: pass,		 	
+              id:   +new Date()
             };
         if (data.userName) {
-          
-
-userData.push(data);
+          userData.push(data);
           saveData();
           
         }
-         
+         window.location="login.html";
 };
 // Get the responses (if any) or an empty array
       function loadData() {
-        return JSON.parse(localStorage.userData || "null") || 
-
-[];
+        return JSON.parse(localStorage.userData || "null") || [];
 
       }
 //Save the new data in local storage
@@ -244,6 +169,9 @@ userData.push(data);
         localStorage.userData= JSON.stringify(userData);
       }
 });
+
+
+
 
 
 
