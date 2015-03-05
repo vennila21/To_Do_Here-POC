@@ -90,3 +90,7 @@
 .edit-in-place.active input {
   display: inline-block;
 }
+#map {
+	height:200px;
+}
+}
