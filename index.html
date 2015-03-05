@@ -5,102 +5,87 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/login.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/bootstrap-responsive.min.css">
-	<link rel="stylesheet" href="css/common.css">
+	<link rel="stylesheet" href="css/login.css">
     <link rel="stylesheet" href="css/menu.css"/>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js"></script>
 	<script src="js/libs/angular.min.js"></script>
 	<script src="js/libs/angular-local-storage.min.js"></script>
 	<script src="js/app.js"></script>
-	<script src="js/directives/angular.editInPlace.js"></script>
-	<script src="js/directives/googleDir.js"></script>
+	<script src="js/login.js"></script>
+	
+	<script src="js/TweenLite.min.js"></script>
 </head>
-<body ng-controller="TodoCtrl" ng-init="init()">   
- <div id="wrapper" ng-controller="menuBar" ng-class="menuOpen">
-   
-     <!-- Sidebar -->
-       
- <nav class="navbar navbar-inverse navbar-fixed-top" id="sidebar-wrapper" role="navigation">
-  
-          <ul class="nav sidebar-nav">
-                <li class="sidebar-brand"><a href="#">Menu</a></li>
-          
-      <li><a href="#">New List</a></li>
-                
-<li><a href="#">Existing List</a></li>
- 
-               <li><a href="#">Log Out</a></li>
-            </ul>
-        </nav>
-        <!-- /#sidebar-wrapper -->
-    
-    <!-- Page Content -->
-      
-  <div id="page-content-wrapper">
-    
-        <button type="button" class="hamburger" ng-class="menuState" data-toggle="offcanvas" ng-click="toggle()">
-          
-      <span class="hamb-top"></span>
-   
-             <span class="hamb-middle"></span>
-    
-            <span class="hamb-bottom"></span>
-           
- </button>
-       
- </div>
-      
-  <!-- /#page-content-wrapper -->
-    
-</div>
-  
-  <div class="container">
-    
-  <div class="row">
-        <div class="col-md-12">
-         
- <google-places location="location"></google-places>
-      
-    <div class="container" id="map" ></div>
-        </div>
-      </div>
-      
-    </div>
-	<div class="container" ng-controller="TodoCtrl" id="playground">
-		<div class="row">
-			<div class="col-xs-12">
-				<div class="row">
-					<div class="col-xs-12">
-						<ul class="nav nav-pills todo-filter">
-						  <li ng-class="{'active' : show == 'All' }" ng-click="show='All'"><a href="#">All</a></li>
-						  <li ng-class="{'active' : show == 'Incomplete' }" ng-click="show='Incomplete'"><a href="#">Incomplete</a></li>
-						  <li ng-class="{'active' : show == 'Complete' }" ng-click="show='Complete'"><a href="#">Complete</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="row" id="todoAdd">
-				  <div class="col-md-6">
-					<div class="form-group">
-						<input class="todoField" id="newTodoField" type="text" ng-model="newTodo" placeholder="Add New Todo List" ng-enter/>
-					</div>
-        </div>
-        
-				</div>
-                <button id="todoSubmit" class="btn btn-default" ng-click="addTodo()">Add List</button>
-				<div class="row todoContainer">
-					<ul class="list-unstyled" ng-repeat="todos in model track by $index" ui-sortable="todoSortable" ng-model="todos.list" ng-show="$index === currentShow">
-						<li class="todoTask" ng-repeat="todo in todos.list | filter:showFn | filter :todoSearch ">
-							<input class="todoCheckbox" ng-model="todo.isDone" type="checkbox">
-							<label class="todoCheckboxlabel" ></label>
-							<edit-in-place value="todo.taskName"></edit-in-place>
-							<button type="button" class="close pull-right customeClose" aria-hidden="true" ng-click="deleteTodo($index)"></button>
-						</li>
-					</ul>
-				</div>
+
+<!-- This is a very simple parallax effect achieved by simple CSS 3 multiple backgrounds, made by http://twitter.com/msurguy -->
+<body>
+<div class="container" ng-controller="loginCtrl" >
+    <div class="row vertical-offset-100">
+    	<div class="col-md-4 col-md-offset-4">
+
+<!--Login -->
+    		<div class="panel panel-default"  ng-show="login" >
+			  	<div class="panel-heading">
+			    	<h3 class="panel-title">Please sign in</h3>
+			 	</div>
+			  	<div class="panel-body">
+			    	<form accept-charset="UTF-8" role="form">
+                    <fieldset>
+			    	  	<div class="form-group">
+			    		    <input class="form-control" placeholder="User Name" id="uname" type="text" ng-model="userName">
+			    		</div>
+			    		<div class="form-group">
+			    			<input class="form-control" placeholder="Password" id="password" type="password" ng-model="password">
+			    		</div>
+			    		<div class="checkbox">
+			    	    	<label>
+			    	    		<input name="remember" id="rememberMe" type="checkbox" ng-change="setValues()" ng-model="checkFlag" ng-
+
+checked="checkFlag"> Remember Me
+			    	    	</label>
+			    	    </div>
+			    		<button class="btn btn-lg btn-success" type="submit" id="loginButton" ng-click="loginClick()">Login</button>
+					<button class="btn btn-lg btn-primary" id="newUserButton" ng-click="registerClick()">Register</button>
+			    	</fieldset>
+			      	</form>
+			    </div>
 			</div>
+
+
+
+
+
+<!--Register -->
+
+	<div  class="panel panel-default"  ng-show="register">
+			  	<div class="panel-heading">
+			    	<h3 class="panel-title">Register Me!!!</h3>
+			 	</div>
+			  	<div class="panel-body">
+			    	<form accept-charset="UTF-8" role="form">
+                    <fieldset>
+			    	  	<div class="form-group">
+			    		    <input class="form-control" placeholder="User Name" id="userName" type="text">
+			    		</div>
+			    		<div class="form-group">
+			    			<input class="form-control" placeholder="Password" id="pwd" type="password">
+			    		</div>
+					<div class="form-group">
+			    			<input class="form-control" placeholder="E-mail" id="email" type="email">
+			    		</div>
+
+
+	
+					<button  class="btn btn-lg btn-primary btn-block" ng-click="registerMe()">Submit</button>
+			    	</fieldset>
+			      	</form>
+			    </div>
+			</div>
+
 		</div>
 	</div>
-<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true&libraries=places&language=en-US"></script>
+</div>
 </body>
 </html>
